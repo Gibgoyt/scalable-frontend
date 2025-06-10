@@ -1,0 +1,232 @@
+---
+import Layout from 'src/layouts/Layout.astro';
+---
+
+<Layout title="Applications - ASSQ-CloudFlare Stack">
+
+	<main>
+		<!-- Hero Section -->
+		<section class="bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 py-16 lg:py-24">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="text-center">
+					<h1 class="text-4xl lg:text-5xl font-bold mb-6">
+						Framework Applications Hub
+					</h1>
+					<p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+						Explore different application architectures and patterns using Astro, SolidJS, and Svelte. Learn about client islands, server islands, SPAs, and hydration strategies.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Application Types Section -->
+		<section class="py-16 lg:py-24">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<h2 class="text-3xl font-bold text-center mb-12">Application Architectures</h2>
+				
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+					<!-- SPA Applications -->
+					<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+						<div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
+							<svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Single Page Applications</h3>
+						<p class="text-gray-600 dark:text-gray-300 mb-4">
+							Full client-side applications with routing, state management, and complete framework hydration.
+						</p>
+						<div class="space-y-2">
+							<a href="/solid-spa" class="block px-4 py-2 bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/40 transition-colors">
+								🔥 SolidJS SPA
+							</a>
+							<a href="/svelte-spa" class="block px-4 py-2 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/40 transition-colors">
+								🎯 Svelte SPA
+							</a>
+						</div>
+					</div>
+
+					<!-- Client Islands -->
+					<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+						<div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
+							<svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Client Islands</h3>
+						<p class="text-gray-600 dark:text-gray-300 mb-4">
+							Interactive components hydrated only when needed, keeping the majority of the page static.
+						</p>
+						<div class="space-y-2">
+							<a href="/islands/interactive" class="block px-4 py-2 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/40 transition-colors">
+								🏝️ Interactive Islands
+							</a>
+							<a href="/islands/lazy" class="block px-4 py-2 bg-teal-100 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300 rounded-lg hover:bg-teal-200 dark:hover:bg-teal-900/40 transition-colors">
+								⏰ Lazy Load Islands
+							</a>
+							<a href="/islands/visible" class="block px-4 py-2 bg-cyan-100 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-300 rounded-lg hover:bg-cyan-200 dark:hover:bg-cyan-900/40 transition-colors">
+								👁️ Visible Islands
+							</a>
+						</div>
+					</div>
+
+					<!-- Server Islands -->
+					<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+						<div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
+							<svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"></path>
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Server Islands</h3>
+						<p class="text-gray-600 dark:text-gray-300 mb-4">
+							Server-side rendered components with dynamic content, perfect for SEO and performance.
+						</p>
+						<div class="space-y-2">
+							<a href="/server/dynamic" class="block px-4 py-2 bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/40 transition-colors">
+								🚀 Dynamic Content
+							</a>
+							<a href="/server/api" class="block px-4 py-2 bg-violet-100 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300 rounded-lg hover:bg-violet-200 dark:hover:bg-violet-900/40 transition-colors">
+								🔗 API Integration
+							</a>
+							<a href="/server/database" class="block px-4 py-2 bg-fuchsia-100 dark:bg-fuchsia-900/20 text-fuchsia-700 dark:text-fuchsia-300 rounded-lg hover:bg-fuchsia-200 dark:hover:bg-fuchsia-900/40 transition-colors">
+								🗄️ Database Queries
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Hydration Strategies Section -->
+				<div class="mb-16">
+					<h2 class="text-3xl font-bold text-center mb-12">Hydration Strategies</h2>
+					
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+						<div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-8">
+							<h3 class="text-2xl font-bold mb-4 text-blue-800 dark:text-blue-200">Partial Hydration</h3>
+							<p class="text-blue-700 dark:text-blue-300 mb-6">
+								Ship only the JavaScript you need. Most of your site remains static HTML for optimal performance.
+							</p>
+							<div class="space-y-3">
+								<div class="flex items-center space-x-3">
+									<div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+									<span class="text-blue-800 dark:text-blue-200">client:load - Hydrate immediately</span>
+								</div>
+								<div class="flex items-center space-x-3">
+									<div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+									<span class="text-blue-800 dark:text-blue-200">client:idle - Hydrate when browser is idle</span>
+								</div>
+								<div class="flex items-center space-x-3">
+									<div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+									<span class="text-blue-800 dark:text-blue-200">client:visible - Hydrate when in viewport</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-8">
+							<h3 class="text-2xl font-bold mb-4 text-purple-800 dark:text-purple-200">Full Hydration</h3>
+							<p class="text-purple-700 dark:text-purple-300 mb-6">
+								Traditional SPA approach where the entire application is hydrated on the client side.
+							</p>
+							<div class="space-y-3">
+								<div class="flex items-center space-x-3">
+									<div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+									<span class="text-purple-800 dark:text-purple-200">Complete framework runtime</span>
+								</div>
+								<div class="flex items-center space-x-3">
+									<div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+									<span class="text-purple-800 dark:text-purple-200">Client-side routing</span>
+								</div>
+								<div class="flex items-center space-x-3">
+									<div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+									<span class="text-purple-800 dark:text-purple-200">Global state management</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- CloudFlare Integration Examples -->
+				<div>
+					<h2 class="text-3xl font-bold text-center mb-12">CloudFlare Integration Examples</h2>
+					
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+						<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+							<div class="w-10 h-10 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mb-4">
+								<svg class="w-5 h-5 text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+									<path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+								</svg>
+							</div>
+							<h3 class="font-semibold mb-2">Workers API</h3>
+							<p class="text-sm text-gray-600 dark:text-gray-300">
+								Serverless functions at the edge
+							</p>
+						</div>
+
+						<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+							<div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
+								<svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+									<path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+								</svg>
+							</div>
+							<h3 class="font-semibold mb-2">D1 Database</h3>
+							<p class="text-sm text-gray-600 dark:text-gray-300">
+								SQLite at the edge
+							</p>
+						</div>
+
+						<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+							<div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
+								<svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
+									<path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+								</svg>
+							</div>
+							<h3 class="font-semibold mb-2">R2 Storage</h3>
+							<p class="text-sm text-gray-600 dark:text-gray-300">
+								Object storage for assets
+							</p>
+						</div>
+
+						<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+							<div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
+								<svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+									<path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+								</svg>
+							</div>
+							<h3 class="font-semibold mb-2">KV Store</h3>
+							<p class="text-sm text-gray-600 dark:text-gray-300">
+								Global key-value storage
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Getting Started Section -->
+		<section class="py-16 lg:py-24 bg-gray-50 dark:bg-gray-900">
+			<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+				<h2 class="text-3xl font-bold mb-6">
+					Start Building with ASSQ-CloudFlare
+				</h2>
+				<p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+					Choose your preferred architecture and framework combination. Each approach is optimized for different use cases.
+				</p>
+				<div class="flex flex-col sm:flex-row gap-4 justify-center">
+					<a href="/docs" class="px-8 py-4 bg-blue-600 text-white text-lg rounded-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl">
+						Read Documentation
+					</a>
+					<a href="/frameworks-test" class="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-lg rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700">
+						Try Framework Demo
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="border-t border-gray-200 dark:border-gray-800 py-12">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center text-gray-600 dark:text-gray-400">
+				<p>&copy; 2025 ASSQ-CloudFlare Stack Template. Open source and ready to use.</p>
+			</div>
+		</div>
+	</footer>
+</Layout>

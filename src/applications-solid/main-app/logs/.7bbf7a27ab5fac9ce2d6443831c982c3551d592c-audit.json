@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/ahmed/Projects/Astro/cloudflare-frontend/src/applications-solid/main-app/logs/.7bbf7a27ab5fac9ce2d6443831c982c3551d592c-audit.json",
+    "files": [
+        {
+            "date": 1749558003329,
+            "name": "/Users/ahmed/Projects/Astro/cloudflare-frontend/src/applications-solid/main-app/logs/mcp-puppeteer-2025-06-10.log",
+            "hash": "d559ef7663cc11361c65ef90788e9a0df4aa6c32abe07b3a60f35e8aad4fae2d"
+        }
+    ],
+    "hashType": "sha256"
+}

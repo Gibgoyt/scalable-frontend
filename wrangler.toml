@@ -1,0 +1,25 @@
+name = "astro-solidjs-cloudflare"
+compatibility_date = "2024-01-01"
+
+# Uncomment and configure these bindings as needed:
+
+# D1 Database
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "my-database"
+# database_id = "your-database-id"
+
+# KV Namespace
+# [[kv_namespaces]]
+# binding = "KV"
+# id = "your-kv-namespace-id"
+
+# Durable Objects
+# [[durable_objects.bindings]]
+# name = "COUNTER"
+# class_name = "Counter"
+
+# R2 Bucket
+# [[r2_buckets]]
+# binding = "R2"
+# bucket_name = "my-bucket"

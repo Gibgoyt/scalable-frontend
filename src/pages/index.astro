@@ -1,0 +1,195 @@
+
+---
+import Layout from 'src/layouts/Layout.astro';
+---
+
+<Layout title="ASSQ-CloudFlare Stack - Modern Multi-Framework Development Template">
+
+	<main>
+		<!-- Hero Section -->
+		<section class="relative overflow-hidden">
+			<div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 -z-10"></div>
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+				<div class="text-center">
+					<h1 class="text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+						ASSQ-CloudFlare Tech Stack
+					</h1>
+					<p class="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+						A modern development template combining Astro, SolidJS, Svelte, and Qwik in a single application, deployed on CloudFlare.
+					</p>
+					<div class="flex flex-col sm:flex-row gap-4 justify-center">
+						<a href="/docs" class="px-8 py-4 bg-blue-600 text-white text-lg rounded-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl">
+							View Documentation
+						</a>
+						<a href="/frameworks-test" class="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-lg rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700">
+							Try Live Demo
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Tech Stack Features Section -->
+		<section class="py-16 lg:py-24">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="text-center mb-12">
+					<h2 class="text-3xl lg:text-4xl font-bold mb-4">
+						Why ASSQ-CloudFlare Stack?
+					</h2>
+					<p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+						Combine the best of modern web frameworks in a single, performant application with edge deployment capabilities.
+					</p>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+						<div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
+							<svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Astro Framework</h3>
+						<p class="text-gray-600 dark:text-gray-300">
+							Static site generation with partial hydration. Ship less JavaScript while maintaining interactivity where needed.
+						</p>
+					</div>
+
+					<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+						<div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
+							<svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-3">SolidJS Reactivity</h3>
+						<p class="text-gray-600 dark:text-gray-300">
+							Fine-grained reactivity system with compiled components. High performance with familiar JSX syntax.
+						</p>
+					</div>
+
+					<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+						<div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
+							<svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Svelte Simplicity</h3>
+						<p class="text-gray-600 dark:text-gray-300">
+							Write less code with Svelte's compile-time optimizations. No virtual DOM overhead with great developer experience.
+						</p>
+					</div>
+
+					<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+						<div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mb-4">
+							<svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Qwik Resumability</h3>
+						<p class="text-gray-600 dark:text-gray-300">
+							HTML-first with instant loading. Zero hydration overhead with resumable applications that start fast.
+						</p>
+					</div>
+
+					<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+						<div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mb-4">
+							<svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-3">CloudFlare Edge</h3>
+						<p class="text-gray-600 dark:text-gray-300">
+							Global edge deployment with instant page loads. Workers, R2 storage, and D1 database integration.
+						</p>
+					</div>
+
+					<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+						<div class="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center mb-4">
+							<svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Developer Experience</h3>
+						<p class="text-gray-600 dark:text-gray-300">
+							TypeScript support, hot module reloading, and modern tooling. Choose the right framework for each component.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- How It Works Section -->
+		<section class="py-16 lg:py-24 bg-gray-50 dark:bg-gray-900">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div class="text-center mb-12">
+					<h2 class="text-3xl lg:text-4xl font-bold mb-4">
+						How to Use This Template
+					</h2>
+					<p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+						Three simple steps to start building with the ASSQ-CloudFlare stack
+					</p>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+					<div class="text-center">
+						<div class="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+							1
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Clone & Install</h3>
+						<p class="text-gray-600 dark:text-gray-300">
+							Clone this repository and run npm install. All frameworks are pre-configured and ready to use.
+						</p>
+					</div>
+
+					<div class="text-center">
+						<div class="w-20 h-20 bg-purple-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+							2
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Choose Your Framework</h3>
+						<p class="text-gray-600 dark:text-gray-300">
+							Select Astro for static content, SolidJS for reactive UIs, Svelte for simplicity, or Qwik for performance.
+						</p>
+					</div>
+
+					<div class="text-center">
+						<div class="w-20 h-20 bg-green-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+							3
+						</div>
+						<h3 class="text-xl font-semibold mb-3">Deploy to CloudFlare</h3>
+						<p class="text-gray-600 dark:text-gray-300">
+							Connect to CloudFlare Pages for instant global deployment with edge computing capabilities.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- CTA Section -->
+		<section class="py-16 lg:py-24">
+			<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+				<h2 class="text-3xl lg:text-4xl font-bold mb-4">
+					Ready to Build with ASSQ?
+				</h2>
+				<p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+					Explore the power of combining multiple modern frameworks in a single, optimized application.
+				</p>
+				<div class="flex flex-col sm:flex-row gap-4 justify-center">
+					<a href="/docs" class="px-8 py-4 bg-blue-600 text-white text-lg rounded-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl">
+						Read Documentation
+					</a>
+					<a href="/frameworks-test" class="px-8 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-lg rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700">
+						Try Live Demo
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="border-t border-gray-200 dark:border-gray-800 py-12">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center text-gray-600 dark:text-gray-400">
+				<p>&copy; 2025 ASSQ-CloudFlare Stack Template. Open source and ready to use.</p>
+			</div>
+		</div>
+	</footer>
+</Layout>

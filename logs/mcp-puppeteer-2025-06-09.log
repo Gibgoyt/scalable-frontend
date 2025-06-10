@@ -1,0 +1,124 @@
+{"level":"info","message":"Starting MCP server","service":"mcp-puppeteer","timestamp":"2025-06-09 18:20:06.496"}
+{"level":"info","message":"MCP server started successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:20:06.498"}
+{"arguments":{"targetUrl":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:25:47.287","tool":"puppeteer_connect_active_tab"}
+{"0":"n","1":"p","2":"x","level":"info","message":"Launching browser with config:","service":"mcp-puppeteer","timestamp":"2025-06-09 18:25:47.292"}
+{"level":"info","message":"Browser launched successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:25:54.541"}
+{"level":"info","message":"Puppeteer MCP Server closing","service":"mcp-puppeteer","timestamp":"2025-06-09 18:26:20.986"}
+{"level":"info","message":"Starting MCP server","service":"mcp-puppeteer","timestamp":"2025-06-09 18:26:42.933"}
+{"level":"info","message":"MCP server started successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:26:42.934"}
+{"arguments":{"targetUrl":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:27:09.359","tool":"puppeteer_connect_active_tab"}
+{"0":"n","1":"p","2":"x","level":"info","message":"Launching browser with config:","service":"mcp-puppeteer","timestamp":"2025-06-09 18:27:09.360"}
+{"level":"info","message":"Browser launched successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:27:11.114"}
+{"arguments":{"targetUrl":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:32:32.858","tool":"puppeteer_connect_active_tab"}
+{"level":"info","message":"Connecting to existing browser","service":"mcp-puppeteer","targetUrl":"http://localhost:4321/","timestamp":"2025-06-09 18:32:32.882","wsEndpoint":"ws://localhost:9222/devtools/browser/72932eb4-69c5-4ddb-a3b7-19867f00a568"}
+{"level":"debug","message":"Closing existing browser connection","service":"mcp-puppeteer","timestamp":"2025-06-09 18:32:32.882"}
+{"level":"debug","message":"Establishing connection to browser","service":"mcp-puppeteer","timestamp":"2025-06-09 18:32:32.883"}
+{"level":"info","message":"Successfully connected to browser","service":"mcp-puppeteer","timestamp":"2025-06-09 18:32:32.896"}
+{"level":"info","message":"Found active webpage:","service":"mcp-puppeteer","timestamp":"2025-06-09 18:32:32.910","title":"Home - Astro + SolidJS + Cloudflare","url":"http://localhost:4321/"}
+{"arguments":{"height":800,"name":"initial-view","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:32:44.892","tool":"puppeteer_screenshot"}
+{"arguments":{"selector":"button[aria-label=\"Toggle theme\"]"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:33:00.608","tool":"puppeteer_click"}
+{"arguments":{"script":"// Find all buttons on the page\nconst buttons = Array.from(document.querySelectorAll('button'));\nbuttons.map(btn => ({\n  text: btn.textContent,\n  className: btn.className,\n  ariaLabel: btn.getAttribute('aria-label'),\n  innerHTML: btn.innerHTML\n}))"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:33:08.499","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":247,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:33:08.500"}
+{"hasResult":false,"level":"debug","logCount":0,"message":"Script execution result","resultType":"undefined","service":"mcp-puppeteer","timestamp":"2025-06-09 18:33:08.503"}
+{"arguments":{"selector":"svg"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:33:16.653","tool":"puppeteer_click"}
+{"arguments":{"height":800,"name":"light-mode-view","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:33:32.989","tool":"puppeteer_screenshot"}
+{"level":"info","message":"Puppeteer MCP Server closing","service":"mcp-puppeteer","timestamp":"2025-06-09 18:34:25.103"}
+{"level":"info","message":"Starting MCP server","service":"mcp-puppeteer","timestamp":"2025-06-09 18:34:53.957"}
+{"level":"info","message":"MCP server started successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:34:53.958"}
+{"arguments":{"targetUrl":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:36:20.281","tool":"puppeteer_connect_active_tab"}
+{"0":"n","1":"p","2":"x","level":"info","message":"Launching browser with config:","service":"mcp-puppeteer","timestamp":"2025-06-09 18:36:20.283"}
+{"level":"info","message":"Browser launched successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:36:22.077"}
+{"arguments":{"debugPort":9222},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:38:07.029","tool":"puppeteer_connect_active_tab"}
+{"arguments":{"targetUrl":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:40:17.254","tool":"puppeteer_connect_active_tab"}
+{"level":"info","message":"Puppeteer MCP Server closing","service":"mcp-puppeteer","timestamp":"2025-06-09 18:42:05.204"}
+{"level":"info","message":"Starting MCP server","service":"mcp-puppeteer","timestamp":"2025-06-09 18:42:18.862"}
+{"level":"info","message":"MCP server started successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:42:18.863"}
+{"arguments":{"targetUrl":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:43:21.438","tool":"puppeteer_connect_active_tab"}
+{"0":"n","1":"p","2":"x","level":"info","message":"Launching browser with config:","service":"mcp-puppeteer","timestamp":"2025-06-09 18:43:21.439"}
+{"level":"info","message":"Browser launched successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:43:23.433"}
+{"level":"info","message":"Connecting to existing browser","service":"mcp-puppeteer","targetUrl":"http://localhost:4321/","timestamp":"2025-06-09 18:43:23.458","wsEndpoint":"ws://localhost:9222/devtools/browser/94cba20e-7744-4c45-8871-106450688157"}
+{"level":"debug","message":"Establishing connection to browser","service":"mcp-puppeteer","timestamp":"2025-06-09 18:43:23.459"}
+{"level":"info","message":"Successfully connected to browser","service":"mcp-puppeteer","timestamp":"2025-06-09 18:43:23.472"}
+{"level":"info","message":"Found active webpage:","service":"mcp-puppeteer","timestamp":"2025-06-09 18:43:23.494","title":"New Tab","url":"chrome://new-tab-page/"}
+{"arguments":{"url":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:43:36.882","tool":"puppeteer_navigate"}
+{"level":"info","message":"Navigating to URL","service":"mcp-puppeteer","timestamp":"2025-06-09 18:43:36.883","url":"http://localhost:4321/"}
+{"level":"info","message":"Navigation successful","service":"mcp-puppeteer","status":200,"timestamp":"2025-06-09 18:43:39.506","url":"http://localhost:4321/"}
+{"arguments":{"height":800,"name":"initial-view","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:43:46.761","tool":"puppeteer_screenshot"}
+{"arguments":{"script":"// Check if we're in dark mode\ndocument.documentElement.classList.contains('dark')"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:08.162","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":82,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:08.163"}
+{"hasResult":false,"level":"debug","logCount":0,"message":"Script execution result","resultType":"undefined","service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:08.169"}
+{"arguments":{"selector":"[aria-label=\"Toggle theme\"]"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:16.295","tool":"puppeteer_click"}
+{"arguments":{"script":"// Find any button that might be a theme toggle\nArray.from(document.querySelectorAll('button')).map(btn => ({\n  text: btn.textContent,\n  className: btn.className,\n  ariaLabel: btn.getAttribute('aria-label'),\n  innerHTML: btn.innerHTML.substring(0, 100)\n}))"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:29.496","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":256,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:29.497"}
+{"hasResult":false,"level":"debug","logCount":0,"message":"Script execution result","resultType":"undefined","service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:29.504"}
+{"arguments":{"script":"// Look for svg or any clickable element in the top right\nconst elements = document.querySelectorAll('button, svg, [role=\"button\"]');\nArray.from(elements).map(el => ({\n  tagName: el.tagName,\n  className: el.className,\n  id: el.id,\n  ariaLabel: el.getAttribute('aria-label'),\n  boundingBox: el.getBoundingClientRect()\n})).filter(el => el.boundingBox.top < 100)"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:41.791","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":359,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:41.792"}
+{"hasResult":false,"level":"debug","logCount":0,"message":"Script execution result","resultType":"undefined","service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:41.795"}
+{"arguments":{"script":"// Click on the element in the top right\nconst x = window.innerWidth - 50;\nconst y = 50;\nconst element = document.elementFromPoint(x, y);\nif (element) {\n  element.click();\n  return 'Clicked on: ' + element.tagName + ' ' + element.className;\n}"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:52.084","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":242,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:52.085"}
+{"hasResult":true,"level":"debug","logCount":0,"message":"Script execution result","resultType":"string","service":"mcp-puppeteer","timestamp":"2025-06-09 18:44:52.099"}
+{"arguments":{"height":800,"name":"light-mode-issue","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:45:02.099","tool":"puppeteer_screenshot"}
+{"arguments":{"script":"// Get the computed styles of the problematic text\nconst element = document.querySelector('p.text-lg');\nif (element) {\n  const styles = window.getComputedStyle(element);\n  return {\n    color: styles.color,\n    backgroundColor: styles.backgroundColor,\n    parentBg: window.getComputedStyle(element.parentElement).backgroundColor,\n    bodyBg: window.getComputedStyle(document.body).backgroundColor,\n    text: element.textContent.trim()\n  };\n}"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:45:48.199","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":440,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:45:48.200"}
+{"hasResult":true,"level":"debug","logCount":0,"message":"Script execution result","resultType":"object","service":"mcp-puppeteer","timestamp":"2025-06-09 18:45:48.210"}
+{"arguments":{"script":"// Check for any background images or gradients\nconst body = document.body;\nconst main = document.querySelector('main');\nreturn {\n  bodyBgImage: window.getComputedStyle(body).backgroundImage,\n  mainBgImage: main ? window.getComputedStyle(main).backgroundImage : null,\n  bodyClasses: body.className,\n  mainClasses: main ? main.className : null\n}"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:46:11.453","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":344,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:46:11.454"}
+{"hasResult":true,"level":"debug","logCount":0,"message":"Script execution result","resultType":"object","service":"mcp-puppeteer","timestamp":"2025-06-09 18:46:11.457"}
+{"arguments":{"script":"// Check what text-gray-900 should be\nconst testDiv = document.createElement('div');\ntestDiv.className = 'text-gray-900';\ndocument.body.appendChild(testDiv);\nconst color = window.getComputedStyle(testDiv).color;\ndocument.body.removeChild(testDiv);\nreturn color;"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:46:20.658","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":261,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:46:20.658"}
+{"hasResult":true,"level":"debug","logCount":0,"message":"Script execution result","resultType":"string","service":"mcp-puppeteer","timestamp":"2025-06-09 18:46:20.668"}
+{"arguments":{"url":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:47:02.690","tool":"puppeteer_navigate"}
+{"level":"info","message":"Navigating to URL","service":"mcp-puppeteer","timestamp":"2025-06-09 18:47:02.691","url":"http://localhost:4321/"}
+{"level":"info","message":"Navigation successful","service":"mcp-puppeteer","status":200,"timestamp":"2025-06-09 18:47:03.770","url":"http://localhost:4321/"}
+{"arguments":{"height":800,"name":"light-mode-fixed","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:47:15.540","tool":"puppeteer_screenshot"}
+{"arguments":{"selector":"button.fixed"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:47:26.812","tool":"puppeteer_click"}
+{"arguments":{"targetUrl":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:50:53.120","tool":"puppeteer_connect_active_tab"}
+{"level":"info","message":"Connecting to existing browser","service":"mcp-puppeteer","targetUrl":"http://localhost:4321/","timestamp":"2025-06-09 18:50:53.143","wsEndpoint":"ws://localhost:9222/devtools/browser/94cba20e-7744-4c45-8871-106450688157"}
+{"level":"debug","message":"Closing existing browser connection","service":"mcp-puppeteer","timestamp":"2025-06-09 18:50:53.143"}
+{"level":"debug","message":"Establishing connection to browser","service":"mcp-puppeteer","timestamp":"2025-06-09 18:50:53.144"}
+{"level":"info","message":"Successfully connected to browser","service":"mcp-puppeteer","timestamp":"2025-06-09 18:50:53.168"}
+{"level":"info","message":"Found active webpage:","service":"mcp-puppeteer","timestamp":"2025-06-09 18:50:53.210","title":"Home - Astro + SolidJS + Cloudflare","url":"http://localhost:4321/"}
+{"arguments":{"script":"// Click the theme toggle button\nconst button = document.querySelector('button.fixed');\nif (button) {\n  button.click();\n  return 'Toggled theme';\n}"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:51:10.336","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":147,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:51:10.337"}
+{"hasResult":true,"level":"debug","logCount":0,"message":"Script execution result","resultType":"string","service":"mcp-puppeteer","timestamp":"2025-06-09 18:51:10.361"}
+{"arguments":{"height":800,"name":"light-mode-verified","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:51:30.188","tool":"puppeteer_screenshot"}
+{"arguments":{"script":"// First, remove dark class and ensure we're in light mode\ndocument.documentElement.classList.remove('dark');\n// Also update localStorage\nlocalStorage.setItem('darkMode', 'false');\nreturn 'Switched to light mode';"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:51:43.176","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":213,"service":"mcp-puppeteer","timestamp":"2025-06-09 18:51:43.177"}
+{"hasResult":true,"level":"debug","logCount":0,"message":"Script execution result","resultType":"string","service":"mcp-puppeteer","timestamp":"2025-06-09 18:51:43.179"}
+{"arguments":{"height":800,"name":"light-mode-final-check","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:51:51.597","tool":"puppeteer_screenshot"}
+{"level":"info","message":"Puppeteer MCP Server closing","service":"mcp-puppeteer","timestamp":"2025-06-09 18:55:46.701"}
+{"level":"info","message":"Starting MCP server","service":"mcp-puppeteer","timestamp":"2025-06-09 18:55:51.465"}
+{"level":"info","message":"MCP server started successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:55:51.466"}
+{"arguments":{"targetUrl":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 18:59:34.447","tool":"puppeteer_connect_active_tab"}
+{"0":"n","1":"p","2":"x","level":"info","message":"Launching browser with config:","service":"mcp-puppeteer","timestamp":"2025-06-09 18:59:34.450"}
+{"level":"info","message":"Browser launched successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 18:59:41.916"}
+{"level":"info","message":"Connecting to existing browser","service":"mcp-puppeteer","targetUrl":"http://localhost:4321/","timestamp":"2025-06-09 18:59:41.988","wsEndpoint":"ws://localhost:9222/devtools/browser/94cba20e-7744-4c45-8871-106450688157"}
+{"level":"debug","message":"Establishing connection to browser","service":"mcp-puppeteer","timestamp":"2025-06-09 18:59:41.988"}
+{"level":"info","message":"Successfully connected to browser","service":"mcp-puppeteer","timestamp":"2025-06-09 18:59:42.006"}
+{"level":"info","message":"Found active webpage:","service":"mcp-puppeteer","timestamp":"2025-06-09 18:59:42.028","title":"Home - Astro + SolidJS + Cloudflare","url":"http://localhost:4321/"}
+{"arguments":{"height":800,"name":"initial_state","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:00:01.888","tool":"puppeteer_screenshot"}
+{"arguments":{"selector":"button[aria-label=\"Toggle dark mode\"]"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:00:13.335","tool":"puppeteer_click"}
+{"arguments":{"height":800,"name":"dark_mode","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:00:21.324","tool":"puppeteer_screenshot"}
+{"arguments":{"script":"// Check if dark class is on the html element\nconst htmlElement = document.documentElement;\nconst hasDarkClass = htmlElement.classList.contains('dark');\n\n// Get the computed styles for the text\nconst textElement = document.querySelector('p.text-lg');\nconst computedStyles = window.getComputedStyle(textElement);\nconst color = computedStyles.color;\n\n// Get all classes on the element\nconst classes = textElement.className;\n\n({\n  hasDarkClass,\n  textColor: color,\n  elementClasses: classes,\n  htmlClasses: htmlElement.className\n})"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:01:42.419","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":528,"service":"mcp-puppeteer","timestamp":"2025-06-09 19:01:42.425"}
+{"hasResult":false,"level":"debug","logCount":0,"message":"Script execution result","resultType":"undefined","service":"mcp-puppeteer","timestamp":"2025-06-09 19:01:42.484"}
+{"arguments":{"selector":"button[aria-label=\"Toggle dark mode\"]"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:01:51.891","tool":"puppeteer_click"}
+{"arguments":{"script":"const textElement = document.querySelector('p.text-lg.text-black');\nif (textElement) {\n    const styles = window.getComputedStyle(textElement);\n    return {\n        color: styles.color,\n        classes: textElement.className,\n        htmlHasDark: document.documentElement.classList.contains('dark')\n    };\n}\nreturn null;"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:02:04.235","tool":"puppeteer_evaluate"}
+{"level":"debug","message":"Executing script in browser","scriptLength":320,"service":"mcp-puppeteer","timestamp":"2025-06-09 19:02:04.236"}
+{"hasResult":true,"level":"debug","logCount":0,"message":"Script execution result","resultType":"object","service":"mcp-puppeteer","timestamp":"2025-06-09 19:02:04.247"}
+{"arguments":{"url":"http://localhost:4321/"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:03:22.814","tool":"puppeteer_navigate"}
+{"level":"info","message":"Navigating to URL","service":"mcp-puppeteer","timestamp":"2025-06-09 19:03:22.815","url":"http://localhost:4321/"}
+{"level":"info","message":"Navigation successful","service":"mcp-puppeteer","status":200,"timestamp":"2025-06-09 19:03:23.924","url":"http://localhost:4321/"}
+{"arguments":{"height":800,"name":"light_mode_fixed","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:03:32.778","tool":"puppeteer_screenshot"}
+{"arguments":{"selector":"button[aria-label=\"Toggle dark mode\"]"},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:03:45.074","tool":"puppeteer_click"}
+{"arguments":{"height":800,"name":"dark_mode_fixed","width":1200},"level":"debug","message":"Tool call received","service":"mcp-puppeteer","timestamp":"2025-06-09 19:03:52.916","tool":"puppeteer_screenshot"}
+{"level":"info","message":"Puppeteer MCP Server closing","service":"mcp-puppeteer","timestamp":"2025-06-09 19:04:30.852"}
+{"level":"info","message":"Starting MCP server","service":"mcp-puppeteer","timestamp":"2025-06-09 19:17:00.838"}
+{"level":"info","message":"MCP server started successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 19:17:00.839"}
+{"level":"info","message":"Puppeteer MCP Server closing","service":"mcp-puppeteer","timestamp":"2025-06-09 20:01:44.798"}
+{"level":"info","message":"Starting MCP server","service":"mcp-puppeteer","timestamp":"2025-06-09 20:36:47.020"}
+{"level":"info","message":"MCP server started successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 20:36:47.023"}
+{"level":"info","message":"Puppeteer MCP Server closing","service":"mcp-puppeteer","timestamp":"2025-06-09 21:04:26.538"}
+{"level":"info","message":"Starting MCP server","service":"mcp-puppeteer","timestamp":"2025-06-09 21:04:31.356"}
+{"level":"info","message":"MCP server started successfully","service":"mcp-puppeteer","timestamp":"2025-06-09 21:04:31.358"}
+{"level":"info","message":"Puppeteer MCP Server closing","service":"mcp-puppeteer","timestamp":"2025-06-09 21:04:33.528"}
