@@ -8,6 +8,7 @@ import tailwindcss from "@tailwindcss/vite"
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'server',
   server: {
     port: 3000,
     host: true
@@ -30,7 +31,11 @@ export default defineConfig({
     }),
     svelte()
   ],
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
+  }),
   vite: {
     plugins: [
       // DO NOT CHANGE THIS, OFFICIAL DOCS: https://tailwindcss.com/docs/installation/framework-guides/astro

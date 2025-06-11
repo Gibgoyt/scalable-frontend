@@ -3,11 +3,21 @@ import { testQueries } from '../../../lib/db/test-queries';
 
 export const GET: APIRoute = async ({ locals }) => {
   try {
-    const db = locals.runtime.env.DB;
+    // Try different ways to access the D1 binding
+    const db = locals.runtime?.env?.DB || 
+               (locals as any).env?.DB || 
+               (locals as any).DB;
     
     if (!db) {
       return new Response(
-        JSON.stringify({ error: 'Database not configured' }), 
+        JSON.stringify({ 
+          error: 'Database not configured',
+          debug: {
+            hasRuntime: !!locals.runtime,
+            hasEnv: !!locals.runtime?.env,
+            localsKeys: Object.keys(locals)
+          }
+        }), 
         { 
           status: 500,
           headers: { 'Content-Type': 'application/json' }
@@ -50,7 +60,10 @@ export const GET: APIRoute = async ({ locals }) => {
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const db = locals.runtime.env.DB;
+    // Try different ways to access the D1 binding
+    const db = locals.runtime?.env?.DB || 
+               (locals as any).env?.DB || 
+               (locals as any).DB;
     
     if (!db) {
       return new Response(

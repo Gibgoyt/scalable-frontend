@@ -10,9 +10,9 @@ compatibility_date = "2024-01-01"
  database_id = "22d86356-69ed-4aef-9892-3ed62ba427f1"
 
 # KV Namespace
-# [[kv_namespaces]]
-# binding = "KV"
-# id = "your-kv-namespace-id"
+[[kv_namespaces]]
+binding = "SESSION"
+id = "your-session-kv-namespace-id"
 
 # Durable Objects
 # [[durable_objects.bindings]]
