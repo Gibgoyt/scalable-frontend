@@ -3,35 +3,64 @@ import { defineMiddleware } from 'astro:middleware'
 // Hardcoded authentication status - change this to true/false as needed
 const isAuthenticated: boolean = false
 
-const publicPaths = [
-  '/',
-  '/about',
-  '/features',
-  '/pricing',
-  '/frameworks-test',
-  '/cloudflare',
-  '/api'
-]
-
-function isPublicPath(pathname: string): boolean {
-  return publicPaths.some(path => pathname === path || pathname.startsWith(path + '/'))
-}
+// 'startsWith' should include SPAs, since any reloads of the page, even while client-side router is active, will route
+// through the server (i.e. Astro's router)
+type Paths = {
+  exact: string[],
+  startsWith: string[],
+} | null
 
 export const onRequest = defineMiddleware((context, next) => {
   const { url } = context
   const { pathname } = url
 
-  // Debug logging
-  console.log('Middleware executing for:', pathname)
+  const publicPaths: Paths = {
+    exact: [
+      '/',
+      '/frameworks-test',
+      '/apps',
+      '/about',
+      '/cloudflare',
+      '/api',
+      '/features',
+    ],
+    startsWith: [
+      '/docs',
+      '/svelte-spa',
+      '/solid-spa',
+    ],
+  }
 
+  // const protectedPaths: Paths = {
+  //   exact: [],
+  //   startsWith: [],
+  // }
+
+  // const hiddenPaths: Paths = {
+  //   exact: [],
+  //   startsWith: [],
+  // }
+
+  const isPublicPath: boolean = publicPaths.exact.some((item: string): boolean => {
+    return pathname === item
+  }) || publicPaths.startsWith.some((item: string): boolean => {
+    return pathname.startsWith(item + '/')
+  })
+
+  if (isPublicPath) {
+    return next()
+  }
+
+  // hardcoded Astro router rejections will look like this:
   if (!isAuthenticated && pathname === '/demo') {
     return Response.redirect(new URL('/', url), 302)
   }
 
   // Check if accessing protected app routes
-  if (pathname.startsWith('/solid-spa/') && !isAuthenticated) {
+  if (!isAuthenticated && pathname.startsWith('/solid-spa/')) {
     return Response.redirect(new URL('/', url), 302)
   }
-  
-  return next()
+
+  // if unknown path than return to '/' (no/less 404s)
+  return Response.redirect(new URL('/', url), 302)
 })

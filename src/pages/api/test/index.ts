@@ -38,14 +38,7 @@ export const GET: APIRoute = async ({ locals }) => {
     const result = await testQueries.getAll(db);
     
     return new Response(
-      JSON.stringify({
-        success: true,
-        data: result.results,
-        meta: {
-          count: result.results.length,
-          success: result.success
-        }
-      }), 
+      JSON.stringify(result.results), 
       {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
