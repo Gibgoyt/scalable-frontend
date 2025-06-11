@@ -1,381 +1,414 @@
 # CloudFlare Tech Stack Integration Guide
 
-## 🌐 CloudFlare-First Architecture for Astro Applications
+## Overview
 
-This guide shows how to leverage CloudFlare's edge computing platform with your multi-framework Astro application for maximum performance and cost efficiency.
+This guide covers how to optimally use CloudFlare's tech stack with your Astro multi-framework application, focusing on cost efficiency, performance, and when to stay within vs. go outside the CloudFlare ecosystem.
 
-## 📊 CloudFlare Services Decision Matrix
+## CloudFlare Services Decision Matrix
 
-### KV (Key-Value Store) - "The Speed Cache"
+### 1. KV (Key-Value Store) - The Cache Layer
 
-**Best for:** High-read, low-write data that needs global distribution
+#### Perfect for:
+- **Server Islands Caching**: Cache your Qwik server island outputs
+- **API Response Caching**: Cache external API calls
+- **User Preferences**: Store theme, language, settings
+- **Session Data**: Lightweight session storage
+- **Configuration**: Feature flags, A/B test configs
+- **Content Fragments**: Cached HTML snippets, markdown content
 
-| Use Case | Implementation | Example |
-|----------|---------------|---------|
-| **Configuration data** | Store feature flags, site settings | Theme preferences, API endpoints |
-| **Session storage** | Cache user sessions, temporary data | Login tokens, shopping cart state |
-| **Content caching** | Cache API responses, computed data | Product listings, user profiles |
-| **A/B testing** | Store experiment configurations | Feature rollouts, UI variants |
-| **Rate limiting** | Track API usage per user/IP | Request counters, quotas |
+#### Implementation Examples:
 
 ```typescript
-// Example: Caching expensive API calls in Server Islands
-export async function GET({ request }: APIRoute) {
-  const cacheKey = `products:${categoryId}`;
+// Cache Qwik server island output
+export async function cacheServerIsland(key: string, html: string, ttl = 3600) {
+  await KV.put(`island:${key}`, html, { expirationTtl: ttl });
+}
+
+// Cache API responses
+export async function getCachedData(endpoint: string) {
+  const cached = await KV.get(`api:${endpoint}`);
+  if (cached) return JSON.parse(cached);
   
-  // Try KV first
-  let products = await env.PRODUCTS_KV.get(cacheKey, "json");
-  
-  if (!products) {
-    // Expensive operation
-    products = await fetchFromExternalAPI();
-    // Cache for 1 hour
-    await env.PRODUCTS_KV.put(cacheKey, JSON.stringify(products), {
-      expirationTtl: 3600
-    });
-  }
-  
-  return new Response(JSON.stringify(products));
+  const fresh = await fetch(endpoint);
+  const data = await fresh.json();
+  await KV.put(`api:${endpoint}`, JSON.stringify(data), { expirationTtl: 300 });
+  return data;
+}
+
+// User preferences
+export async function getUserPrefs(userId: string) {
+  return await KV.get(`prefs:${userId}`, "json");
 }
 ```
 
-### D1 (SQL Database) - "The Relational Powerhouse"
+#### Cost Optimization:
+- **Free tier**: 100,000 reads/day, 1,000 writes/day
+- Use for high-read, low-write scenarios
+- Perfect for caching expensive computations
 
-**Best for:** Structured data requiring ACID transactions and complex queries
+#### Don't use KV for:
+- Large files (>25MB limit)
+- Complex queries or relationships
+- High-frequency writes
+- Transactional data
 
-| Use Case | Implementation | Example |
-|----------|---------------|---------|
-| **User management** | User accounts, profiles, permissions | Authentication, user settings |
-| **Content management** | Blog posts, pages, metadata | CMS functionality, SEO data |
-| **E-commerce** | Products, orders, inventory | Shopping cart, order history |
-| **Analytics** | Page views, user interactions | Custom analytics, reporting |
-| **Relationships** | Many-to-many, foreign keys | User-product favorites, categories |
+### 2. D1 (SQL Database) - The Structured Data Layer
+
+#### Perfect for:
+- **User Management**: Accounts, profiles, permissions
+- **Content Management**: Blog posts, products, inventory
+- **Analytics**: Page views, user behavior, metrics
+- **Relational Data**: Orders, customers, relationships
+- **Application State**: Todo lists, project data, CRM
+
+#### Implementation Examples:
 
 ```typescript
-// Example: User dashboard with complex queries
-export async function GET({ locals }: APIRoute) {
-  const { results } = await locals.DB.prepare(`
-    SELECT 
-      o.id, o.total, o.created_at,
-      COUNT(oi.id) as item_count
-    FROM orders o
-    LEFT JOIN order_items oi ON o.id = oi.order_id
-    WHERE o.user_id = ?
-    GROUP BY o.id
-    ORDER BY o.created_at DESC
-    LIMIT 10
-  `).bind(locals.user.id).all();
-  
-  return new Response(JSON.stringify(results));
+// User management
+export async function createUser(email: string, name: string) {
+  return await D1.prepare("INSERT INTO users (email, name, created_at) VALUES (?, ?, ?)")
+    .bind(email, name, new Date().toISOString())
+    .run();
+}
+
+// Blog/CMS
+export async function getBlogPosts(limit = 10) {
+  return await D1.prepare("SELECT * FROM posts WHERE published = true ORDER BY created_at DESC LIMIT ?")
+    .bind(limit)
+    .all();
+}
+
+// Analytics
+export async function trackPageView(path: string, userId?: string) {
+  return await D1.prepare("INSERT INTO page_views (path, user_id, timestamp) VALUES (?, ?, ?)")
+    .bind(path, userId, Date.now())
+    .run();
 }
 ```
 
-### R2 (Object Storage) - "The Asset Manager"
+#### Best Practices:
+- Use with your SSR pages for dynamic data
+- Perfect for server islands that need fresh database data
+- Great for your SPA backends (API routes)
+- Use prepared statements for performance
 
-**Best for:** Large files, static assets, and user-generated content
+#### Architecture Pattern:
+```
+SSG Pages → No D1 needed
+SSR Pages → D1 for dynamic content  
+Server Islands → D1 + KV caching layer
+SPA API Routes → D1 for data operations
+```
 
-| Use Case | Implementation | Example |
-|----------|---------------|---------|
-| **Static assets** | Images, videos, documents | Product photos, user avatars |
-| **File uploads** | User-generated content | Profile pictures, documents |
-| **Backup storage** | Database exports, logs | Automated backups, archives |
-| **CDN origin** | Serve optimized media | Image transformations, video streaming |
-| **Large datasets** | CSV exports, reports | Analytics exports, bulk data |
+### 3. R2 (Object Storage) - The Asset Layer
+
+#### Perfect for:
+- **User Uploads**: Profile pictures, documents, media
+- **Static Assets**: Images, videos, PDFs, backups
+- **Generated Content**: Reports, exports, processed files
+- **CDN Replacement**: Serve static assets globally
+- **Backup Storage**: Database backups, logs
+
+#### Implementation Examples:
 
 ```typescript
-// Example: Image upload with automatic optimization
-export async function POST({ request, locals }: APIRoute) {
-  const formData = await request.formData();
-  const file = formData.get('image') as File;
+// File uploads in your SPA
+export async function uploadUserFile(file: File, userId: string) {
+  const key = `users/${userId}/${Date.now()}-${file.name}`;
   
-  // Store original in R2
-  const originalKey = `uploads/original/${crypto.randomUUID()}-${file.name}`;
-  await locals.R2.put(originalKey, file.stream());
-  
-  // Trigger image optimization (separate worker)
-  await locals.IMAGE_QUEUE.send({
-    originalKey,
-    userId: locals.user.id,
-    variants: ['thumbnail', 'medium', 'large']
+  await R2.put(key, file.stream(), {
+    httpMetadata: {
+      contentType: file.type,
+    },
+    customMetadata: {
+      uploadedBy: userId,
+      originalName: file.name,
+    },
   });
   
-  return new Response(JSON.stringify({ 
-    uploadId: originalKey,
-    status: 'processing' 
-  }));
+  return `https://your-domain.com/files/${key}`;
+}
+
+// Serve optimized images
+export async function getOptimizedImage(key: string, width?: number) {
+  const object = await R2.get(key);
+  if (!object) return null;
+  
+  // Use CloudFlare Images or similar for on-the-fly optimization
+  return object.body;
 }
 ```
 
-### Durable Objects - "The Stateful Coordinator"
+#### Integration with Your Architecture:
+- **Astro**: Serve optimized images in SSG pages
+- **SPA**: Handle file uploads in user dashboards
+- **Server Islands**: Dynamic image galleries
 
-**Best for:** Real-time features requiring coordination and persistent state
+#### Cost Benefits:
+- Cheaper than S3 for egress
+- No egress fees within CloudFlare network
+- Perfect replacement for traditional CDN
 
-| Use Case | Implementation | Example |
-|----------|---------------|---------|
-| **Real-time chat** | WebSocket connections, message history | Live support, team collaboration |
-| **Live collaboration** | Document editing, shared whiteboards | Google Docs-like features |
-| **Game sessions** | Multiplayer state, turn management | Browser games, interactive demos |
-| **Live updates** | Real-time dashboards, live data | Stock prices, sports scores |
-| **Coordination** | Distributed locks, leader election | Background job coordination |
+### 4. Durable Objects - The Stateful Service Layer
+
+#### Perfect for:
+- **Real-time Features**: Chat, collaboration, live updates
+- **User Sessions**: Shopping carts, temporary state
+- **Rate Limiting**: Per-user, per-IP rate limiting
+- **Coordinated State**: Multi-user workflows
+- **WebSocket Connections**: Real-time SPA features
+
+#### Implementation Examples:
 
 ```typescript
-// Example: Real-time chat for customer support
-export class ChatRoom {
-  constructor(state: DurableObjectState) {
-    this.state = state;
+// Real-time collaboration (perfect for SPAs)
+export class CollaborationRoom {
+  constructor(controller: DurableObjectController, env: Env) {
     this.sessions = new Map();
   }
 
-  async handleWebSocket(request: Request) {
-    const [client, server] = new WebSocketPair();
-    const sessionId = crypto.randomUUID();
-    
-    this.sessions.set(sessionId, {
-      websocket: server,
-      userId: await this.authenticateUser(request),
-      joinedAt: Date.now()
-    });
+  async fetch(request: Request) {
+    if (request.headers.get("Upgrade") === "websocket") {
+      const pair = new WebSocketPair();
+      this.handleSession(pair[1], request);
+      return new Response(null, { status: 101, webSocket: pair[0] });
+    }
+  }
 
-    server.addEventListener('message', (event) => {
-      const message = JSON.parse(event.data);
-      this.broadcastMessage(message, sessionId);
-    });
+  handleSession(webSocket: WebSocket, request: Request) {
+    // Handle real-time updates for your SPA
+  }
+}
 
-    return new Response(null, { status: 101, webSocket: client });
+// Shopping cart state
+export class ShoppingCart {
+  async addItem(itemId: string, quantity: number) {
+    // Persist cart state across sessions
+    this.cart.set(itemId, quantity);
+    await this.storage.put("cart", Object.fromEntries(this.cart));
   }
 }
 ```
 
-### Hyperdrive - "The Database Accelerator"
+#### Use Cases in Your Architecture:
+- **SPA Real-time Features**: Live collaboration in dashboards
+- **Stateful Widgets**: Shopping carts, form wizards
+- **User Coordination**: Multi-user editing, live comments
 
-**Best for:** Accelerating connections to external databases outside CloudFlare
+#### Cost Consideration:
+- More expensive than other CloudFlare services
+- Use only when you need guaranteed state consistency
+- Perfect for premium features in SPAs
 
-| Use Case | Implementation | Example |
-|----------|---------------|---------|
-| **Legacy databases** | Existing PostgreSQL, MySQL on AWS/GCP | ERP systems, legacy applications |
-| **Complex analytics** | Data warehouses, OLAP systems | BigQuery, Snowflake connections |
-| **Third-party services** | SaaS databases you don't control | Stripe data, external APIs |
-| **Hybrid architecture** | Gradual migration to CloudFlare | Incremental modernization |
-| **Specialized databases** | Graph, time-series, document DBs | Neo4j, InfluxDB, MongoDB |
+### 5. Hyperdrive - The Database Accelerator
+
+#### Perfect for:
+- **External Database Connections**: PostgreSQL, MySQL on AWS/GCP
+- **Legacy System Integration**: Existing databases you can't migrate
+- **High-Performance Queries**: When D1 isn't enough
+- **Hybrid Architectures**: CloudFlare frontend + external DB
+
+#### Implementation Examples:
 
 ```typescript
-// Example: Connecting to external PostgreSQL via Hyperdrive
-export async function GET({ locals }: APIRoute) {
+// Connect to external PostgreSQL
+export async function getAdvancedAnalytics() {
   // Hyperdrive accelerates this connection
-  const client = postgres(locals.HYPERDRIVE_URL);
+  const db = new Database(env.HYPERDRIVE_URL);
   
-  const analytics = await client`
+  return await db.query(`
     SELECT 
-      DATE_TRUNC('day', created_at) as date,
-      COUNT(*) as orders,
-      SUM(total) as revenue
-    FROM legacy_orders 
+      date_trunc('day', created_at) as date,
+      count(*) as users,
+      avg(session_duration) as avg_session
+    FROM user_sessions 
     WHERE created_at >= NOW() - INTERVAL '30 days'
-    GROUP BY DATE_TRUNC('day', created_at)
+    GROUP BY date_trunc('day', created_at)
     ORDER BY date
-  `;
-  
-  return new Response(JSON.stringify(analytics));
+  `);
 }
 ```
 
-## 🏗️ External Backends - When to Go Outside CloudFlare
+#### When to Use vs D1:
+- **Use Hyperdrive + External DB for**:
+    - Complex analytics queries
+    - Large datasets (>1GB)
+    - Existing database migrations
+    - Advanced SQL features
 
-### AWS/GCP Integration Points
+- **Use D1 for**:
+    - New applications
+    - Simple to moderate complexity
+    - Cost optimization
+    - CloudFlare-native experience
 
-| Scenario | CloudFlare Role | External Role | Example |
-|----------|----------------|---------------|---------|
-| **AI/ML workloads** | Edge caching, API gateway | GPU instances, model inference | Image recognition, LLMs |
-| **Heavy computation** | Request routing, result caching | Batch processing, data analysis | Report generation, ETL |
-| **Specialized services** | Edge optimization | Domain-specific tools | Payment processing, email |
-| **Legacy integration** | Modern frontend, caching | Existing enterprise systems | SAP, Oracle, mainframes |
-| **Compliance needs** | Global delivery | Regulated data processing | HIPAA, SOX requirements |
+### 6. External Backends - When to Break Out
 
-### External Backend Decision Tree
+#### Use External Services (AWS, GCP, Your VMs) for:
 
-```mermaid
-graph TD
-    A[Need External Backend?] --> B{Data Compliance?}
-    B -->|Yes| C[Use Compliant Cloud Provider]
-    B -->|No| D{Computational Complexity?}
-    D -->|High| E[AWS Lambda/GCP Functions]
-    D -->|Low| F{Existing Systems?}
-    F -->|Yes| G[Hyperdrive + Existing DB]
-    F -->|No| H[Stay on CloudFlare]
-    
-    C --> I[CloudFlare as Edge Cache]
-    E --> J[CloudFlare as API Gateway]
-    G --> K[CloudFlare as Accelerator]
-```
+##### Complex Processing
+- **Machine Learning**: Models, training, inference
+- **Video Processing**: Encoding, transcoding
+- **Large Computations**: Data analysis, reporting
+- **Background Jobs**: Email sending, batch processing
 
-## 🎯 Practical Architecture Patterns
+##### Specialized Databases
+- **Search**: Elasticsearch, Algolia
+- **Time Series**: InfluxDB, TimescaleDB
+- **Graph Databases**: Neo4j for complex relationships
+- **Vector Databases**: Pinecone for AI/ML features
 
-### Pattern 1: E-commerce Platform
+##### Enterprise Integration
+- **Legacy Systems**: Mainframes, old APIs
+- **Third-party Services**: CRMs, ERPs
+- **Compliance Requirements**: HIPAA, SOC2 specific hosting
+
+#### Architecture Patterns:
+
 ```typescript
-// Product catalog (high-read, low-write)
-KV: Product cache, pricing, inventory status
-D1: Product metadata, categories, reviews
-R2: Product images, videos, documents
-Durable Objects: Real-time inventory updates
-External: Payment processing (Stripe), fraud detection
+// Hybrid pattern: CloudFlare + External
+export async function processUserData(userData: any) {
+  // Step 1: Store basics in D1
+  await D1.prepare("INSERT INTO users (...) VALUES (...)").run();
+  
+  // Step 2: Send complex processing to external service
+  await fetch("https://your-ml-service.com/process", {
+    method: "POST",
+    body: JSON.stringify(userData)
+  });
+  
+  // Step 3: Cache results in KV
+  await KV.put(`processed:${userId}`, results);
+}
 ```
 
-### Pattern 2: SaaS Dashboard
+## Recommended Architecture Patterns
+
+### Pattern 1: Content-Heavy Site
+```
+Astro SSG → R2 (images) → KV (content cache)
+Blog/CMS → D1 (posts) → KV (rendered HTML)
+Comments → External (if complex) or D1 (if simple)
+```
+
+### Pattern 2: SaaS Application
+```
+Marketing → SSG + KV cache
+App Dashboard → SPA + D1 + Durable Objects (real-time)
+File Storage → R2
+Analytics → D1 + External (complex queries)
+```
+
+### Pattern 3: E-commerce
+```
+Product Pages → SSG + D1 (inventory) + KV (cache)
+Shopping Cart → Durable Objects (state)
+User Uploads → R2
+Order Processing → D1 + External payment APIs
+```
+
+### Pattern 4: Hybrid Architecture
+```
+Frontend → CloudFlare (Astro + Frameworks)
+Simple Data → D1 + KV
+Complex Processing → External APIs (AWS Lambda, etc.)
+File Storage → R2 (new) + S3 (legacy)
+Search → External (Algolia/Elasticsearch)
+```
+
+## Cost Optimization Strategy
+
+### Free Tier Maximization
+1. **KV**: 100k reads/day, 1k writes/day
+2. **D1**: 5M rows read/day, 100k rows written/day
+3. **R2**: 10GB storage, 1M Class A operations/month
+4. **Functions**: 100k requests/day
+
+### Efficient Patterns
+- **Cache Aggressively**: Use KV to cache expensive D1 queries
+- **Batch Operations**: Group D1 writes to stay under limits
+- **Smart Caching**: Cache server islands output in KV
+- **R2 for Assets**: Replace expensive CDN costs
+
+### Monitoring and Alerts
 ```typescript
-// User analytics and management
-KV: Session data, feature flags, user preferences
-D1: User accounts, subscription data, usage logs
-R2: User uploads, export files, backups
-Durable Objects: Real-time collaboration, live updates
-Hyperdrive: Legacy CRM integration, external analytics
+// Track usage to avoid overages
+export async function trackUsage(service: string, operation: string) {
+  const today = new Date().toISOString().split('T')[0];
+  const key = `usage:${service}:${operation}:${today}`;
+  
+  const current = await KV.get(key) || 0;
+  await KV.put(key, (parseInt(current) + 1).toString(), { expirationTtl: 86400 });
+}
 ```
 
-### Pattern 3: Content Platform
-```typescript
-// Blog/CMS with user interaction
-KV: Page cache, site configuration, CDN headers
-D1: Posts, comments, user management
-R2: Media files, document uploads, static assets
-Durable Objects: Live comments, real-time engagement
-External: Email service (SendGrid), search (Algolia)
-```
-
-## 🚀 Integration with Astro Architecture
+## Integration with Your Astro Architecture
 
 ### Server Islands + CloudFlare Services
 ```astro
 ---
-// Server Island that uses multiple CloudFlare services
-export async function load() {
-  // Check KV cache first
-  const cached = await KV.get(`user-dashboard:${userId}`);
-  if (cached) return JSON.parse(cached);
+// Cache expensive server islands
+const cacheKey = `island:user-dashboard:${userId}`;
+let html = await KV.get(cacheKey);
 
-  // Fetch from D1 if not cached
-  const userData = await DB.prepare(
-    "SELECT * FROM users WHERE id = ?"
-  ).bind(userId).first();
-
-  // Cache for 5 minutes
-  await KV.put(`user-dashboard:${userId}`, 
-    JSON.stringify(userData), { expirationTtl: 300 });
-
-  return userData;
+if (!html) {
+  const userData = await D1.prepare("SELECT * FROM users WHERE id = ?").bind(userId).first();
+  html = await renderQwikComponent(UserDashboard, { userData });
+  await KV.put(cacheKey, html, { expirationTtl: 300 });
 }
 ---
-
-<UserDashboard server:defer {userData} />
+<div set:html={html} />
 ```
 
-### SPA + Durable Objects
+### SPA + CloudFlare Services
 ```typescript
-// SPA section that uses WebSocket for real-time features
-// /spa/chat/[...all].astro
-export default function ChatApp() {
-  const [ws, setWs] = createSignal<WebSocket>();
-  
-  onMount(() => {
-    // Connect to Durable Object
-    const websocket = new WebSocket('/api/chat-room/general');
-    setWs(websocket);
+// In your SolidJS SPA
+export async function createProject(projectData: any) {
+  // Store in D1
+  const result = await fetch('/api/projects', {
+    method: 'POST',
+    body: JSON.stringify(projectData)
   });
-
-  return <ChatInterface websocket={ws()} />;
+  
+  // Real-time updates via Durable Objects
+  const ws = new WebSocket('/ws/projects');
+  ws.send(JSON.stringify({ type: 'project_created', data: projectData }));
+  
+  return result;
 }
 ```
 
-## 💰 Cost Optimization Strategy
+## Decision Flowchart
 
-### Free Tier Maximization
-- **KV**: 100,000 reads/day, 1,000 writes/day
-- **D1**: 5 million rows read, 100,000 rows written/day
-- **R2**: 10GB storage, 1 million requests/month
-- **Durable Objects**: 400,000 requests/month
-- **Functions**: 100,000 requests/day
-
-### Caching Strategy for Cost Control
-```typescript
-// Multi-tier caching to minimize paid operations
-async function getExpensiveData(key: string) {
-  // Tier 1: Browser cache (free)
-  // Tier 2: CloudFlare edge cache (free)
-  // Tier 3: KV cache (minimal cost)
-  let data = await KV.get(key);
-  
-  if (!data) {
-    // Tier 4: D1 database (paid operation)
-    data = await DB.prepare("SELECT * FROM expensive_view WHERE id = ?")
-      .bind(key).first();
-    
-    // Cache for 1 hour to minimize future D1 calls
-    await KV.put(key, JSON.stringify(data), { expirationTtl: 3600 });
-  }
-  
-  return data;
-}
+```
+New Feature Needed
+│
+├─ Does it need persistent storage?
+│  ├─ Simple key-value? → KV
+│  ├─ Relational data? → D1
+│  ├─ Files/media? → R2
+│  └─ Complex queries? → External DB + Hyperdrive
+│
+├─ Does it need real-time state?
+│  ├─ Yes → Durable Objects
+│  └─ No → Continue...
+│
+├─ Does it need heavy processing?
+│  ├─ Yes → External Service
+│  └─ No → CloudFlare Functions
+│
+└─ Does it need caching?
+   ├─ Yes → KV
+   └─ No → Direct implementation
 ```
 
-## 🔄 Data Flow Patterns
+## Conclusion
 
-### Write-Heavy Pattern
-```
-Client → D1 (immediate write) → KV (async cache invalidation) → Edge Cache (purge)
-```
+Your CloudFlare stack strategy:
+- **Start Simple**: KV + D1 covers 80% of use cases
+- **Add Complexity**: Durable Objects for real-time features
+- **Scale Smartly**: External services for specialized needs
+- **Cache Everything**: KV as your performance multiplier
+- **Monitor Costs**: Stay within free tiers as long as possible
 
-### Read-Heavy Pattern
-```
-Client → Edge Cache → KV Cache → D1 → External API (fallback chain)
-```
-
-### Real-time Pattern
-```
-Client ←→ Durable Object ←→ D1 (persistence) → KV (state broadcast)
-```
-
-## 🛠️ Development Workflow
-
-### Local Development
-```bash
-# CloudFlare local development with all services
-npx wrangler dev --local
-npx wrangler d1 migrations apply --local
-npx wrangler kv:namespace create "CACHE" --preview
-```
-
-### Testing Strategy
-```typescript
-// Test CloudFlare services with Miniflare
-import { Miniflare } from 'miniflare';
-
-const mf = new Miniflare({
-  kvNamespaces: ['CACHE'],
-  d1Databases: ['DB'],
-  durableObjects: { ChatRoom: 'ChatRoom' }
-});
-
-// Test your functions locally
-```
-
-### Deployment Pipeline
-```yaml
-# CloudFlare Pages with services binding
-name: Deploy
-on: [push]
-jobs:
-  deploy:
-    steps:
-      - run: npx wrangler d1 migrations apply
-      - run: npx astro build
-      - run: npx wrangler pages deploy dist/
-```
-
-## 🎉 The CloudFlare Advantage
-
-Your Astro application will be:
-- **Globally fast**: Edge computing everywhere
-- **Cost effective**: Generous free tiers, pay-per-use
-- **Fully integrated**: All services work together seamlessly
-- **Developer friendly**: Excellent tooling and local development
-- **Infinitely scalable**: From prototype to enterprise
-
-This architecture lets you build everything from simple blogs to complex SaaS platforms entirely on CloudFlare's edge network!
+The key is leveraging CloudFlare's edge network for your Astro + multi-framework setup while knowing when to reach outside for specialized capabilities.
