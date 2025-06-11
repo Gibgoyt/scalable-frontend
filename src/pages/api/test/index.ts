@@ -3,18 +3,18 @@ import { testQueries } from '../../../lib/db/test-queries';
 
 export const GET: APIRoute = async ({ locals }) => {
   try {
-    // Try different ways to access the D1 binding
-    const db = locals.runtime?.env?.DB || 
-               (locals as any).env?.DB || 
-               (locals as any).DB;
+    // Access D1 binding through CloudFlare runtime
+    const runtime = (locals as any).runtime;
+    const db = runtime?.env?.DB;
     
     if (!db) {
       return new Response(
         JSON.stringify({ 
           error: 'Database not configured',
           debug: {
-            hasRuntime: !!locals.runtime,
-            hasEnv: !!locals.runtime?.env,
+            hasRuntime: !!runtime,
+            hasEnv: !!runtime?.env,
+            envKeys: runtime?.env ? Object.keys(runtime.env) : [],
             localsKeys: Object.keys(locals)
           }
         }), 
@@ -60,10 +60,9 @@ export const GET: APIRoute = async ({ locals }) => {
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    // Try different ways to access the D1 binding
-    const db = locals.runtime?.env?.DB || 
-               (locals as any).env?.DB || 
-               (locals as any).DB;
+    // Access D1 binding through CloudFlare runtime
+    const runtime = (locals as any).runtime;
+    const db = runtime?.env?.DB;
     
     if (!db) {
       return new Response(
