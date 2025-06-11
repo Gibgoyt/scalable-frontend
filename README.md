@@ -50,7 +50,7 @@ npx wrangler deploy
 │   │   └── Layout.astro     # Main layout
 │   ├── pages/
 │   │   ├── api/
-│   │   │   └── hello.json.ts # API route example
+│   │   │   └── hello.ts # API route example
 │   │   ├── index.astro      # Home page
 │   │   ├── about.astro      # About page
 │   │   ├── demo.astro       # SolidJS demo
