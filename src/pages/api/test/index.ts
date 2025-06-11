@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
 import { testQueries } from '../../../lib/db/test-queries';
-import type { Env } from '../../../env';
 
 export const GET: APIRoute = async ({ locals }) => {
   try {

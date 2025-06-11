@@ -21,10 +21,10 @@ export const onRequest = defineMiddleware((context, next) => {
       '/apps',
       '/about',
       '/cloudflare',
-      '/api',
       '/features',
     ],
     startsWith: [
+      '/api',
       '/docs',
       '/svelte-spa',
       '/solid-spa',
