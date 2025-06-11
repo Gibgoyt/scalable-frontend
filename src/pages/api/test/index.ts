@@ -1,16 +1,26 @@
 import type { APIRoute } from 'astro';
 import { testQueries } from '../../../lib/db/test-queries';
+import type { Env } from '../../../env';
 
 export const GET: APIRoute = async ({ locals }) => {
   try {
     // Access D1 binding through CloudFlare runtime
-    const runtime = (locals as any).runtime;
+    const runtime = locals.runtime;
     const db = runtime?.env?.DB;
     
     if (!db) {
       return new Response(
         JSON.stringify({ 
           error: 'Database not configured',
+          message: 'D1 binding not found. Please configure D1 binding in CloudFlare Pages dashboard.',
+          instructions: [
+            '1. Go to CloudFlare Pages dashboard',
+            '2. Select your project (astro-solidjs-cloudflare)',
+            '3. Go to Settings > Functions',
+            '4. Add D1 database binding:',
+            '   - Variable name: DB',
+            '   - D1 database: test (ID: 22d86356-69ed-4aef-9892-3ed62ba427f1)'
+          ],
           debug: {
             hasRuntime: !!runtime,
             hasEnv: !!runtime?.env,
@@ -61,7 +71,7 @@ export const GET: APIRoute = async ({ locals }) => {
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     // Access D1 binding through CloudFlare runtime
-    const runtime = (locals as any).runtime;
+    const runtime = locals.runtime;
     const db = runtime?.env?.DB;
     
     if (!db) {
@@ -74,7 +84,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
     
-    const data = await request.json();
+    const data = await request.json() as { name?: string; surname?: string };
     
     if (!data.name || !data.surname) {
       return new Response(
