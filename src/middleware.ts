@@ -14,6 +14,8 @@ export const onRequest = defineMiddleware((context, next) => {
   const { url } = context
   const { pathname } = url
 
+  return next()
+
   const publicPaths: Paths = {
     exact: [
       '/',

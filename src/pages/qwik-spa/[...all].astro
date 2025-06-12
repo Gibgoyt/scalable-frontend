@@ -1,0 +1,21 @@
+---
+import {
+  App
+} from 'src/applications-qwik/main-app/App.tsx'
+import 'src/styles/global.css'
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qwik SPA</title>
+  <base href="/qwik/">
+</head>
+<body>
+<div id="qwik-root">
+  <App client:load />
+</div>
+</body>
+</html>
