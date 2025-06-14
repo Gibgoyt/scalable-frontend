@@ -1,8 +1,10 @@
 /** @jsxImportSource @builder.io/qwik */
-import { component$, useSignal, $ } from '@builder.io/qwik';
+import { component$, useSignal, $, useVisibleTask$, useStore } from '@builder.io/qwik';
 
 export const App = component$(() => {
   const currentPath = useSignal('/');
+  const isDark = useSignal(false);
+  const count = useSignal(0);
 
   const navigate = $((path: string) => {
     currentPath.value = path;
@@ -13,46 +15,132 @@ export const App = component$(() => {
     }
   });
 
+  // Initialize dark mode from localStorage/Astro app
+  useVisibleTask$(() => {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true' ||
+      (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+      document.documentElement.classList.contains('dark');
+
+    isDark.value = isDarkMode;
+    updateTheme(isDarkMode);
+  });
+
+  const updateTheme = $((dark: boolean) => {
+    isDark.value = dark;
+    localStorage.setItem('darkMode', dark.toString());
+    if (dark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  });
+
+  const toggleTheme = $(() => {
+    updateTheme(!isDark.value);
+  });
+
+  const increment = $(() => {
+    count.value++;
+  });
+
+  const decrement = $(() => {
+    count.value--;
+  });
+
+  const reset = $(() => {
+    count.value = 0;
+  });
+
   return (
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class={`min-h-screen transition-colors ${isDark.value ? 'bg-zinc-900 text-gray-100' : 'bg-gradient-to-br from-blue-50 to-indigo-100'}`}>
       {/* Navigation */}
-      <nav class="bg-white shadow-lg border-b border-gray-200">
+      <nav class={`shadow-lg border-b ${isDark.value ? 'bg-zinc-800 border-zinc-700' : 'bg-white border-gray-200'}`}>
         <div class="max-w-6xl mx-auto px-4">
           <div class="flex justify-between items-center py-4">
             <div class="flex items-center space-x-4">
-              <h1 class="text-2xl font-bold text-gray-800">Qwik SPA</h1>
+              <h1 class={`text-2xl font-bold ${isDark.value ? 'text-gray-100' : 'text-gray-800'}`}>Qwik SPA</h1>
+              <a
+                href="/apps"
+                class={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                  isDark.value
+                    ? 'bg-zinc-700 hover:bg-zinc-600 text-gray-300'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                }`}
+              >
+                <span>←</span>
+                <span class="font-medium">Back to Apps</span>
+              </a>
             </div>
 
-            <div class="flex space-x-1">
+            <div class="flex items-center space-x-4">
+              <div class="flex space-x-1">
+                <button
+                  onClick$={() => navigate('/')}
+                  class={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    currentPath.value === '/'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : isDark.value
+                        ? 'text-gray-300 hover:text-blue-400 hover:bg-zinc-700'
+                        : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                  }`}
+                >
+                  Home
+                </button>
+                <button
+                  onClick$={() => navigate('/counter')}
+                  class={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    currentPath.value === '/counter'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : isDark.value
+                        ? 'text-gray-300 hover:text-blue-400 hover:bg-zinc-700'
+                        : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                  }`}
+                >
+                  Counter
+                </button>
+                <button
+                  onClick$={() => navigate('/about')}
+                  class={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    currentPath.value === '/about'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : isDark.value
+                        ? 'text-gray-300 hover:text-blue-400 hover:bg-zinc-700'
+                        : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                  }`}
+                >
+                  About
+                </button>
+                <button
+                  onClick$={() => navigate('/contact')}
+                  class={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    currentPath.value === '/contact'
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : isDark.value
+                        ? 'text-gray-300 hover:text-blue-400 hover:bg-zinc-700'
+                        : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                  }`}
+                >
+                  Contact
+                </button>
+              </div>
               <button
-                onClick$={() => navigate('/')}
-                class={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  currentPath.value === '/'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                onClick$={toggleTheme}
+                class={`p-2 rounded-lg transition-colors ${
+                  isDark.value
+                    ? 'bg-zinc-700 hover:bg-zinc-600 text-yellow-400'
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                 }`}
+                title="Toggle theme"
               >
-                Home
-              </button>
-              <button
-                onClick$={() => navigate('/about')}
-                class={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  currentPath.value === '/about'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                About
-              </button>
-              <button
-                onClick$={() => navigate('/contact')}
-                class={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  currentPath.value === '/contact'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                Contact
+                {isDark.value ? (
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                  </svg>
+                ) : (
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                  </svg>
+                )}
               </button>
             </div>
           </div>
@@ -64,44 +152,100 @@ export const App = component$(() => {
         {currentPath.value === '/' && (
           <div class="text-center">
             <div class="mb-8">
-              <h1 class="text-5xl font-bold text-gray-900 mb-4">
+              <h1 class={`text-5xl font-bold mb-4 ${isDark.value ? 'text-gray-100' : 'text-gray-900'}`}>
                 Welcome to Qwik SPA
               </h1>
-              <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              <p class={`text-xl max-w-2xl mx-auto leading-relaxed ${isDark.value ? 'text-gray-400' : 'text-gray-600'}`}>
                 Experience lightning-fast interactivity with Qwik's resumable architecture.
                 This single-page application loads instantly and stays responsive.
               </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 mt-12">
-              <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div class={`rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 ${isDark.value ? 'bg-zinc-800' : 'bg-white'}`}>
                 <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                   <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                   </svg>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Lightning Fast</h3>
-                <p class="text-gray-600">Zero hydration overhead with resumable components</p>
+                <h3 class={`text-lg font-semibold mb-2 ${isDark.value ? 'text-gray-100' : 'text-gray-900'}`}>Lightning Fast</h3>
+                <p class={isDark.value ? 'text-gray-400' : 'text-gray-600'}>Zero hydration overhead with resumable components</p>
               </div>
 
-              <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div class={`rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 ${isDark.value ? 'bg-zinc-800' : 'bg-white'}`}>
                 <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                   <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">SEO Friendly</h3>
-                <p class="text-gray-600">Server-side rendering with client-side interactivity</p>
+                <h3 class={`text-lg font-semibold mb-2 ${isDark.value ? 'text-gray-100' : 'text-gray-900'}`}>SEO Friendly</h3>
+                <p class={isDark.value ? 'text-gray-400' : 'text-gray-600'}>Server-side rendering with client-side interactivity</p>
               </div>
 
-              <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div class={`rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 ${isDark.value ? 'bg-zinc-800' : 'bg-white'}`}>
                 <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                   <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                   </svg>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Developer Friendly</h3>
-                <p class="text-gray-600">Familiar React-like syntax with modern tooling</p>
+                <h3 class={`text-lg font-semibold mb-2 ${isDark.value ? 'text-gray-100' : 'text-gray-900'}`}>Developer Friendly</h3>
+                <p class={isDark.value ? 'text-gray-400' : 'text-gray-600'}>Familiar React-like syntax with modern tooling</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {currentPath.value === '/counter' && (
+          <div class="max-w-md mx-auto text-center">
+            <div class={`p-8 rounded-xl shadow-lg ${isDark.value ? 'bg-zinc-800' : 'bg-white'}`}>
+              <h1 class="text-3xl font-bold mb-8">Qwik Counter</h1>
+
+              <div class="mb-8">
+                <div class={`text-6xl font-bold mb-4 ${isDark.value ? 'text-blue-400' : 'text-blue-600'}`}>
+                  {count.value}
+                </div>
+                <p class={isDark.value ? 'text-gray-400' : 'text-gray-600'}>
+                  Current count value
+                </p>
+              </div>
+
+              <div class="flex gap-4 justify-center">
+                <button
+                  onClick$={decrement}
+                  class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
+                >
+                  -1
+                </button>
+
+                <button
+                  onClick$={reset}
+                  class={`px-6 py-3 font-semibold rounded-lg transition-colors ${
+                    isDark.value
+                      ? 'bg-zinc-600 hover:bg-zinc-700 text-white'
+                      : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                  }`}
+                >
+                  Reset
+                </button>
+
+                <button
+                  onClick$={increment}
+                  class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
+                >
+                  +1
+                </button>
+              </div>
+
+              <div class="mt-8 space-y-2">
+                <div class={`text-sm ${isDark.value ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <strong>Framework:</strong> Qwik
+                </div>
+                <div class={`text-sm ${isDark.value ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <strong>State Management:</strong> useSignal()
+                </div>
+                <div class={`text-sm ${isDark.value ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <strong>Reactivity:</strong> Fine-grained updates
+                </div>
               </div>
             </div>
           </div>
