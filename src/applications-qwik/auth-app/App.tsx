@@ -23,11 +23,11 @@ const checkRouteAccess = (path: string, config: MiddlewareConfig): { allowed: bo
   //   }
   // }
 
-  console.log(`MOTHERFUCKER QWIK MIDDLEWARE`)
+  console.log(`QWIK MIDDLEWARE`)
 
   // Add more middleware rules as needed
   return {
-    allowed: false
+    allowed: true
   }
 }
 

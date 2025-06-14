@@ -14,7 +14,7 @@ export const onRequest = defineMiddleware((context, next) => {
   const { url } = context
   const { pathname } = url
 
-  console.log(`MOTHERFUCKER ASTRO MIDDLEWARE`)
+  console.log(`ASTRO MIDDLEWARE`)
 
   const isPublicPath: boolean = (
     // exact match
