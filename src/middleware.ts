@@ -14,32 +14,7 @@ export const onRequest = defineMiddleware((context, next) => {
   const { url } = context
   const { pathname } = url
 
-  const publicPaths: Paths = {
-    exact: [
-      '/',
-      '/frameworks-test',
-      '/apps',
-      '/about',
-      '/cloudflare',
-      '/features',
-    ],
-    startsWith: [
-      '/api',
-      '/docs',
-      '/svelte-spa',
-      '/solid-spa',
-    ],
-  }
-
-  // const protectedPaths: Paths = {
-  //   exact: [],
-  //   startsWith: [],
-  // }
-
-  // const hiddenPaths: Paths = {
-  //   exact: [],
-  //   startsWith: [],
-  // }
+  console.log(`MOTHERFUCKER ASTRO MIDDLEWARE`)
 
   const isPublicPath: boolean = (
     // exact match
