@@ -15,9 +15,21 @@ import 'src/styles/global.css'
   <meta name="theme-color" content="#18181b">
   <meta name="color-scheme" content="dark light">
 </head>
-<body class="h-full">
+<body class="h-full bg-zinc-900"> <!-- Add dark background here -->
 <div id="qwik-root" class="h-full">
   <App client:load />
 </div>
+
+<!-- Add this script to detect and apply dark mode before hydration -->
+<script>
+  (function() {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true' ||
+      (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
 </body>
 </html>

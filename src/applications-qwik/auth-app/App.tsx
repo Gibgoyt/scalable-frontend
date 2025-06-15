@@ -8,21 +8,25 @@ interface AppProps {
 // Client-side middleware configuration
 interface MiddlewareConfig {
   allowYouTubeAccess: boolean
-  // Add other permissions here
   allowAnalytics: boolean
   userRole: 'admin' | 'user' | 'guest'
 }
 
+// Function to detect dark mode (can run during SSR)
+const getInitialDarkMode = () => {
+  if (typeof document === 'undefined') {
+    // During SSR, default to dark mode to prevent flickering
+    // (assuming most users prefer dark mode, adjust as needed)
+    return true
+  }
+
+  return document.documentElement.classList.contains('dark') ||
+    localStorage.getItem('darkMode') === 'true' ||
+    (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+}
+
 // Middleware rules - this runs on the client
 const checkRouteAccess = (path: string, config: MiddlewareConfig): { allowed: boolean; redirectTo?: string; message?: string } => {
-  // if (path === '/counter') {
-  //   return {
-  //     allowed: false,
-  //     redirectTo: '/dashboard',
-  //     message: 'Counter access denied'
-  //   }
-  // }
-
   console.log(`QWIK MIDDLEWARE`)
 
   // Add more middleware rules as needed
@@ -33,17 +37,16 @@ const checkRouteAccess = (path: string, config: MiddlewareConfig): { allowed: bo
 
 export const App = component$<AppProps>(({ initialPath = '/' }) => {
   const currentPath = useSignal(initialPath)
-  const isDark = useSignal(
-    typeof document !== 'undefined'
-      ? document.documentElement.classList.contains('dark')
-      : false
-  )
+
+  // Initialize with better dark mode detection
+  const isDark = useSignal(getInitialDarkMode())
+
   const count = useSignal(0)
 
-  // Middleware configuration - this would typically come from your auth system
+  // Middleware configuration
   const middlewareConfig = useSignal<MiddlewareConfig>({
-    allowYouTubeAccess: true, // Toggle this to test middleware
-    allowAnalytics: false,    // Toggle this to test middleware
+    allowYouTubeAccess: true,
+    allowAnalytics: false,
     userRole: 'user'
   })
 
@@ -54,40 +57,35 @@ export const App = component$<AppProps>(({ initialPath = '/' }) => {
 
   // Client-side navigation with middleware
   const navigate = $((path: string) => {
-    // Run middleware check before navigation
     const accessCheck = checkRouteAccess(path, middlewareConfig.value)
 
     if (!accessCheck.allowed) {
       console.log(`Access denied to ${path}:`, accessCheck.message)
       if (accessCheck.redirectTo) {
-        // Redirect to allowed path
         currentPath.value = accessCheck.redirectTo
         if (typeof window !== 'undefined') {
-          const fullPath = `/qwik-spa-auth${accessCheck.redirectTo}` // Fixed: use correct base path
+          const fullPath = `/qwik-spa-auth${accessCheck.redirectTo}`
           window.history.pushState({}, '', fullPath)
         }
       }
       return
     }
 
-    // Allow navigation
     currentPath.value = path
     if (typeof window !== 'undefined') {
-      const fullPath = `/qwik-spa-auth${path}` // Fixed: use correct base path
+      const fullPath = `/qwik-spa-auth${path}`
       window.history.pushState({}, '', fullPath)
     }
   })
 
-  // Initialize URL synchronization (without reactive tracking)
+  // Initialize URL synchronization
   useVisibleTask$(() => {
-    // Only run once on mount, don't track signals
     if (typeof window !== 'undefined') {
       const currentUrl = window.location.pathname
       const expectedPrefix = '/qwik-spa-auth'
       if (currentUrl.startsWith(expectedPrefix)) {
         const urlPath = currentUrl.slice(expectedPrefix.length) || '/'
         if (urlPath !== currentPath.value) {
-          // Run middleware check on initial URL
           const accessCheck = checkRouteAccess(urlPath, middlewareConfig.value)
           if (accessCheck.allowed) {
             currentPath.value = urlPath
@@ -100,13 +98,21 @@ export const App = component$<AppProps>(({ initialPath = '/' }) => {
     }
   })
 
-  // Initialize dark mode (separate task to avoid conflicts)
+  // Refined dark mode initialization - only run once and don't cause re-renders
   useVisibleTask$(() => {
-    const isDarkMode = document.documentElement.classList.contains('dark') ||
-      localStorage.getItem('darkMode') === 'true' ||
-      (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    // Only update if the current state doesn't match what it should be
+    const shouldBeDark = getInitialDarkMode()
 
-    isDark.value = isDarkMode
+    if (isDark.value !== shouldBeDark) {
+      isDark.value = shouldBeDark
+    }
+
+    // Apply to document
+    if (shouldBeDark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
   })
 
   const updateTheme = $((dark: boolean) => {
@@ -135,7 +141,6 @@ export const App = component$<AppProps>(({ initialPath = '/' }) => {
     count.value = 0
   })
 
-  // Helper function to toggle middleware permissions (for demo)
   const togglePermission = $((permission: keyof MiddlewareConfig) => {
     const current = middlewareConfig.value
     middlewareConfig.value = {
@@ -160,27 +165,16 @@ export const App = component$<AppProps>(({ initialPath = '/' }) => {
           <p class={`mb-6 ${isDark.value ? 'text-gray-400' : 'text-gray-600'}`}>
             {routeAccess.value.message || 'You don\'t have permission to access this page.'}
           </p>
-          {/*<button*/}
-          {/*  onClick$={() => navigate('/')}*/}
-          {/*  class={`inline-flex items-center gap-2 px-6 py-3 font-medium rounded-lg transition-colors ${*/}
-          {/*    isDark.value*/}
-          {/*      ? 'bg-blue-600 hover:bg-blue-700 text-white'*/}
-          {/*      : 'bg-blue-500 hover:bg-blue-600 text-white'*/}
-          {/*  }`}*/}
-          {/*>*/}
-          {/*  <span>←</span>*/}
-          {/*  <span>Go to Home</span>*/}
-          {/*</button>*/}
           <a
             href="/apps"
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+            class={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
               isDark.value
                 ? 'bg-zinc-700 hover:bg-zinc-600 text-gray-300'
                 : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
             }`}
           >
             <span>←</span>
-            <span className="font-medium">Back to Apps</span>
+            <span class="font-medium">Back to Apps</span>
           </a>
         </div>
       </div>
@@ -194,7 +188,7 @@ export const App = component$<AppProps>(({ initialPath = '/' }) => {
       <nav class={`shadow-lg border-b ${isDark.value ? 'bg-zinc-800 border-zinc-700' : 'bg-white border-gray-200'}`}>
         <div class="max-w-6xl mx-auto px-4">
           <div class="flex justify-between items-center py-4">
-          <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4">
               <h1 class={`text-2xl font-bold ${isDark.value ? 'text-gray-100' : 'text-gray-800'}`}>Qwik SPA</h1>
               <a
                 href="/apps"
@@ -262,7 +256,7 @@ export const App = component$<AppProps>(({ initialPath = '/' }) => {
 
       {/* Main Content */}
       <main class="max-w-6xl mx-auto px-4 py-12">
-        {currentPath.value === '/dashboard' && (
+        {(currentPath.value === '/dashboard' || currentPath.value === '/') && (
           <div class="text-center">
             <div class="mb-8">
               <h1 class={`text-5xl font-bold mb-4 ${isDark.value ? 'text-gray-100' : 'text-gray-900'}`}>

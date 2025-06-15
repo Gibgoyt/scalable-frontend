@@ -38,7 +38,7 @@ export const MiddlewareProvider: Component<MiddlewareProviderProps> = (props) =>
   // Navigate programmatically
   const navigateTo = (path: string) => {
     const oldRoute = currentRoute()
-    
+
     // Run before navigation handlers
     let shouldNavigate = true
     for (const handler of beforeHandlers) {
@@ -48,11 +48,11 @@ export const MiddlewareProvider: Component<MiddlewareProviderProps> = (props) =>
         break
       }
     }
-    
+
     if (shouldNavigate) {
       window.history.pushState({}, '', path)
       setCurrentRoute(path)
-      
+
       // Run after navigation handlers
       for (const handler of afterHandlers) {
         handler(path)
@@ -63,11 +63,11 @@ export const MiddlewareProvider: Component<MiddlewareProviderProps> = (props) =>
   // Listen for popstate events (back/forward buttons)
   createEffect(() => {
     if (typeof window === 'undefined') return
-    
+
     const handlePopState = () => {
       const newRoute = window.location.pathname
       const oldRoute = currentRoute()
-      
+
       // Run before navigation handlers
       let shouldNavigate = true
       for (const handler of beforeHandlers) {
@@ -79,10 +79,10 @@ export const MiddlewareProvider: Component<MiddlewareProviderProps> = (props) =>
           return
         }
       }
-      
+
       if (shouldNavigate) {
         setCurrentRoute(newRoute)
-        
+
         // Run after navigation handlers
         for (const handler of afterHandlers) {
           handler(newRoute)
@@ -91,7 +91,7 @@ export const MiddlewareProvider: Component<MiddlewareProviderProps> = (props) =>
     }
 
     window.addEventListener('popstate', handlePopState)
-    
+
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
@@ -119,14 +119,14 @@ export const authMiddleware = () => {
   // ALL PAGES OF THIS SOLID SPA **REQUIRE** AUTHENTICATION
   return (_from: string, to: string) => {
     // Hardcoded authentication check for testing - change this to false to test redirect
-    const isAuthenticated = true // Change to false to test unauthenticated flow
-    
+    const isAuthenticated = true// Change to false to test unauthenticated flow
+
     if (!isAuthenticated) {
       console.log('User not authenticated, redirecting to home')
       window.location.href = '/'
       return false
     }
-    
+
     return true
   }
 }
