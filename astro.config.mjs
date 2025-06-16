@@ -4,6 +4,7 @@ import cloudflare from '@astrojs/cloudflare'
 import solidJs from '@astrojs/solid-js'
 import svelte from '@astrojs/svelte'
 import qwikdev from '@qwikdev/astro'
+import mdx from '@astrojs/mdx'
 import tailwindcss from "@tailwindcss/vite"
 
 // https://astro.build/config
@@ -14,6 +15,7 @@ export default defineConfig({
     host: true
   },
   integrations: [
+    mdx(),
     qwikdev({
       include: [
         '**/components-qwik/*',

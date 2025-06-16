@@ -22,11 +22,11 @@ import SolidCounter from 'src/components-solid/SolidCounter';
     <h1>Multi-Framework Test Page</h1>
     <p>Testing Svelte, Qwik, and SolidJS components working together in Astro!</p>
     
-    <SvelteCounter client:only="svelte" />
+    <SvelteCounter client:load />
     
     <QwikCounter />
 
-    <SolidCounter client:only="solid-js" />
+    <SolidCounter client:load />
   </main>
 </Layout>
 
